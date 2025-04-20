@@ -1,0 +1,1 @@
+docker run -d --name open-webui -p 127.0.0.1:8081:8080 --restart=on-failure:5 -v /usr/local/open-webui:/app/backend/data --memory=4096m --cpus=3 --add-host=host.docker.internal:host-gateway -e HF_HUB_OFFLINE=1 ghcr.io/open-webui/open-webui:latest

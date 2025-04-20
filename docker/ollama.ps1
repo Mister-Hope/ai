@@ -1,0 +1,1 @@
+docker run -d --restart always -p 127.0.0.1:11434:11434 --gpus all --add-host=host.docker.internal:host-gateway -v ollama:/root/.ollama -e OLLAMA_KEEP_ALIVE=-1 --name ollama ollama/ollama
