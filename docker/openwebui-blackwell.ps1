@@ -1,1 +1,0 @@
-docker run -d -p 127.0.0.1:3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/mister-hope/open-webui-blackwell:cu128-cuda

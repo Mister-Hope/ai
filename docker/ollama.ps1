@@ -1,1 +1,2 @@
-docker run -d --restart always -p 127.0.0.1:11434:11434 --gpus all --add-host=host.docker.internal:host-gateway -v ollama:/root/.ollama -e OLLAMA_KEEP_ALIVE=-1 -e OLLAMA_CONTEXT_LENGTH=8192 -e OLLAMA_NEW_ENGINE=true --name ollama ollama/ollama
+# -e OLLAMA_NEW_ENGINE=true
+docker run -d --name ollama --restart always --gpus all --add-host=host.docker.internal:host-gateway -e OLLAMA_DEBUG=1 -e OLLAMA_KEEP_ALIVE=-1 -e OLLAMA_CONTEXT_LENGTH=8192 -p 127.0.0.1:11434:11434 -v ollama:/root/.ollama ollama/ollama
