@@ -11,4 +11,5 @@ docker run -d \
   -e http_proxy="http://${DOCKER_HOST_IP}:10808" \
   -e https_proxy="http://${DOCKER_HOST_IP}:10808" \
   -e no_proxy="localhost,127.0.0.0/8,::1,api.deepseek.com,host.docker.internal" \
-  ghcr.io/mister-hope/open-webui-blackwell:cu128-cuda
+  ghcr.io/open-webui/open-webui:cuda
+
