@@ -7,6 +7,7 @@ docker run -d \
   --gpus all \
   -p 127.0.0.1:3000:8080 \
   -v open-webui:/app/backend/data \
+  -e CUSTOM_NAME="智慧问答助手" \
   -e GLOBAL_LOG_LEVEL="DEBUG" \
   -e http_proxy="http://${DOCKER_HOST_IP}:10808" \
   -e https_proxy="http://${DOCKER_HOST_IP}:10808" \
