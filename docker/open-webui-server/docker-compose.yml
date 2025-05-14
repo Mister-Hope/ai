@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: open-webui
+    restart: on-failure:5
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - /usr/local/open-webui:/app/backend/data
+    environment:
+      - CUSTOM_NAME=Mister-Hope's AI
+      - HF_HUB_OFFLINE=1
+    deploy:
+      resources:
+        limits:
+          cpus: "3"
+          memory: 4096M
