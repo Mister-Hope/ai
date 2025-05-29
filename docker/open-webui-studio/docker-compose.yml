@@ -1,36 +1,12 @@
 services:
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    restart: always
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
-    ports:
-      - "11434:11434"
-    volumes:
-      - /usr/share/ollama/.ollama:/root/.ollama # Replace with your actual host path
-    environment:
-      - OLLAMA_HOST=0.0.0.0
-      # - OLLAMA_DEBUG=1
-      - http_proxy=http://${DOCKER_HOST_IP}:10808
-      - https_proxy=http://${DOCKER_HOST_IP}:10808
-      - no_proxy=localhost,127.0.0.0/8,::1,api.deepseek.com,host.docker.internal,open-webui,pipelines
-
   open-webui:
     image: ghcr.io/open-webui/open-webui:cuda
     container_name: open-webui
     restart: always
     depends_on:
-      - ollama
       - pipelines
     extra_hosts:
-      - "host.docker.internal:${DOCKER_HOST_IP}"
+      - "host.docker.internal:host-gateway"
     deploy:
       resources:
         reservations:
@@ -54,11 +30,14 @@ services:
       - WEBUI_URL=https://ai.mister-hope.com
       - http_proxy=http://${DOCKER_HOST_IP}:10808
       - https_proxy=http://${DOCKER_HOST_IP}:10808
-      - no_proxy=localhost,127.0.0.0/8,::1,api.deepseek.com,host.docker.internal,ollama,pipelines
+      - no_proxy=localhost,127.0.0.0/8,::1,192.168.31.0/24,api.deepseek.com,host.docker.internal,ollama,pipelines
+    networks:
+      - default
+      - ollama
 
   pipelines:
     image: ghcr.io/open-webui/pipelines:main
-    container_name: pipelines
+    container_name: open-webui-pipelines
     volumes:
       - pipelines:/app/pipelines
     ports:
@@ -68,7 +47,9 @@ services:
       - PIPELINES_API_KEY=shigongwei-pipelines
       - http_proxy=http://${DOCKER_HOST_IP}:10808
       - https_proxy=http://${DOCKER_HOST_IP}:10808
-      - no_proxy=localhost,127.0.0.0/8,::1,api.deepseek.com,host.docker.internal,open-webui,pipelines,ollama
+      - no_proxy=localhost,127.0.0.0/8,::1,192.168.31.0/24
+    networks:
+      - default
 
 volumes:
   open-webui:
@@ -77,4 +58,13 @@ volumes:
 
   pipelines:
     name: pipelines
+    external: true
+
+networks:
+  default:
+    driver: bridge
+    internal: true
+
+  ollama:
+    name: ollama
     external: true
